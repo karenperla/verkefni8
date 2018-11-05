@@ -64,10 +64,25 @@ const text = (() => {
 
   // event handler fyrir það að klára að breyta færslu
   function commit(e) {
+    if (event.keyCode === 13){
+      console.log(e.target)
+
+      newTextEl = el(`span`, `item__text`, edit)
+      newTextEl.appendChild(document.createTextNode(newText))
+
+      const button = parentNode.querySelector(`.item__button`);
+
+      parentNode.insertBefore(newTextEl, button)
+
+      //bæta inn const newText = e.target.value
+      //const parentNode = e.target.parentNode
+      //parentNode.removeChild(e.target)
+    }
   }
 
   // fall sem sér um að bæta við nýju item
   function add(value) {
+
   }
 
   // event handler til að eyða færslu
