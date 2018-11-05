@@ -46,7 +46,21 @@ const text = (() => {
 
   // event handler fyrir það að breyta færslu
   function edit(e) {
-  }
+    const {target} = e
+    const {textContent,parentNode} = target;
+
+    parentNode.removeChild(target);
+
+    const input = el(`input`, `item__edit`);
+    input.setAttribute(`type`, `text`);
+    input.value = textContent; 
+    input.addEventListener(`keyup`, commit);
+
+    const button = parentNode.querySelector(`.item__button`);
+
+    parentNode.insertBefore(input, button);
+    input.focus();
+    }
 
   // event handler fyrir það að klára að breyta færslu
   function commit(e) {
