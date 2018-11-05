@@ -10,30 +10,30 @@ document.addEventListener('DOMContentLoaded', () => {
 const text = (() => {
   let items;
 
- // TODO láta hluti í _items virka 
- 
+  // TODO láta hluti í _items virka
+
   function init(_form, _items) {
     items = _items;
     _form.addEventListener('submit', formHandler);
-    
-    for(let item of items.querySelectorAll(`.item`)){
-      const checkbox = item.querySelectorAll(`.item__checkbox`);
-      checkbox.addEventListener(`click`, finish);
 
-      const text = item.querySelector(`.item__text`);
-      text.addEventListener(`click`, edit);
+    for(let item of items.querySelectorAll('.item')){
+      const checkbox = item.querySelector('.item__checkbox');
+      checkbox.addEventListener('click', finish);
 
-      const button = item.querySelector(`.item__button`);
-      button.addEventListener(`click`, deleteItem);
+      const text = item.querySelector('.item__text');
+      text.addEventListener('click', edit);
+
+      const button = item.querySelector('.item__button');
+      button.addEventListener('click', deleteItem);
     }
   }
 
   function formHandler(e) {
     e.preventDefault();
 
-    const intput = e.target.querySelector(`.form__input`);
+    const input = e.target.querySelector('.form__input');
 
-    if (intput.value.trim().length > 0) {
+    if (input.value.trim().length > 0) {
       add(input.value);
       input.value = "";
     }
@@ -41,62 +41,61 @@ const text = (() => {
 
   // event handler fyrir það að klára færslu
   function finish(e) {
-    e.target.parentNode.classList.toggle(`item--done`)
+    e.target.parentNode.classList.toggle('item--done');
   }
 
   // event handler fyrir það að breyta færslu
   function edit(e) {
     const {target} = e
-    const {textContent,parentNode} = target;
+    const {textContent, parentNode} = target;
 
     parentNode.removeChild(target);
 
-    const input = el(`input`, `item__edit`);
-    input.setAttribute(`type`, `text`);
+    const input = el('input', 'item__edit'); 
+    input.setAttribute('type', 'text'); 
     input.value = textContent; 
-    input.addEventListener(`keyup`, commit);
+    input.addEventListener('keyup',commit); 
 
-    const button = parentNode.querySelector(`.item__button`);
+    const button = parentNode.querySelector('.item__button');
 
     parentNode.insertBefore(input, button);
     input.focus();
-    }
+  }
 
   // event handler fyrir það að klára að breyta færslu
   function commit(e) {
-    if (event.keyCode === 13){
+    if(event.keyCode === 13){
       console.log(e.target)
-
-      newTextEl = el(`span`, `item__text`, edit)
+      
+      newTextEl = el('span', 'item__text', edit)
       newTextEl.appendChild(document.createTextNode(newText))
+      
+      const button = parentNode.querySelector('.item__button');
 
-      const button = parentNode.querySelector(`.item__button`);
-
-      parentNode.insertBefore(newTextEl, button)
-
-      //bæta inn const newText = e.target.value
-      //const parentNode = e.target.parentNode
-      //parentNode.removeChild(e.target)
+      parentNode.insertBefore(newTextEl, button) 
+      
+      const newText = e.target.value 
+      const parentNode = e.target.parentNode
+      parentNode.removeChild(e.target)
     }
   }
 
   // fall sem sér um að bæta við nýju item
   function add(value) {
-    
-    const newItem = el(`li`, `item`)
 
-    const newText = el(`span`, `item__text`, edit)
+    const newItem = el('li', 'item')
+    const newText = el('span', 'item__text', edit)
     newText.appendChild(document.createTextNode(value))
+    
+    const newCheckbox = el('input', 'item__checkbox', finish)
+    newCheckbox.setAttribute('type', 'checkbox'); 
 
-    const newCheckbox = el(`input`, `item__checkbox`, finish)
-    newCheckbox.setAttribute(`type`, `checkbox`);
-
-    const newButton = el(`button`, 'item__button', deleteItem)
-    newText.appendChild(document.createTextNode(`Eyða`))
+    const newButton = el('button', 'item__button', deleteItem)
+    newButton.appendChild(document.createTextNode('Eyða'))
 
     items.appendChild(newItem)
-    newItem.appendChild(newText)
     newItem.appendChild(newCheckbox)
+    newItem.appendChild(newText)
     newItem.appendChild(newButton)
   }
 
@@ -110,6 +109,14 @@ const text = (() => {
 
   // hjálparfall til að útbúa element
   function el(type, className, clickHandler) {
+    var newElement = document.createElement(type); 
+    if(className) {
+      newElement.className = className; 
+    }
+    if(clickHandler){  
+      newElement.addEventListener('click', clickHandler);
+    }
+    return newElement;  
   }
 
   return {
