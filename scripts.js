@@ -82,11 +82,30 @@ const text = (() => {
 
   // fall sem sér um að bæta við nýju item
   function add(value) {
+    
+    const newItem = el(`li`, `item`)
 
+    const newText = el(`span`, `item__text`, edit)
+    newText.appendChild(document.createTextNode(value))
+
+    const newCheckbox = el(`input`, `item__checkbox`, finish)
+    newCheckbox.setAttribute(`type`, `checkbox`);
+
+    const newButton = el(`button`, 'item__button', deleteItem)
+    newText.appendChild(document.createTextNode(`Eyða`))
+
+    items.appendChild(newItem)
+    newItem.appendChild(newText)
+    newItem.appendChild(newCheckbox)
+    newItem.appendChild(newButton)
   }
 
   // event handler til að eyða færslu
   function deleteItem(e) {
+    const {target} = e
+    const {textContent, parentNode} = target;
+
+    parentNode.remove(target);
   }
 
   // hjálparfall til að útbúa element
